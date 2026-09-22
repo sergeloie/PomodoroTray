@@ -91,4 +91,4 @@ exe into the folder that opens.
 
 ## License
 
-Add a license before publishing if you want to constrain reuse.
+[MIT](LICENSE)
