@@ -121,9 +121,9 @@ namespace PomodoroTray
 
         public string PhaseLabel => CurrentPhase switch
         {
-            PomodoroPhase.Work => "Работа",
-            PomodoroPhase.ShortBreak => "Короткий перерыв",
-            PomodoroPhase.LongBreak => "Длинный перерыв",
+            PomodoroPhase.Work => "Work",
+            PomodoroPhase.ShortBreak => "Short Break",
+            PomodoroPhase.LongBreak => "Long Break",
             _ => ""
         };
     }

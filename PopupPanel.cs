@@ -58,7 +58,7 @@ namespace PomodoroTray
 
             _phaseLabel = new Label
             {
-                Text = "Работа",
+                Text = "Work",
                 ForeColor = Color.Gainsboro,
                 Font = new Font("Segoe UI", 9f),
                 AutoSize = false,
@@ -96,10 +96,10 @@ namespace PomodoroTray
             _skipButton = MakeGlyphButton(glyphFont, GlyphSkip, 44);
             _pinButton = MakeGlyphButton(glyphFont, GlyphPin, 44);
 
-            _tip.SetToolTip(_startPauseButton, "Старт");
-            _tip.SetToolTip(_resetButton, "Сброс");
-            _tip.SetToolTip(_skipButton, "Пропустить фазу");
-            _tip.SetToolTip(_pinButton, "Закрепить панель");
+            _tip.SetToolTip(_startPauseButton, "Start");
+            _tip.SetToolTip(_resetButton, "Reset");
+            _tip.SetToolTip(_skipButton, "Skip phase");
+            _tip.SetToolTip(_pinButton, "Pin panel");
 
             _startPauseButton.Click += (s, e) => StartPauseClicked?.Invoke(this, EventArgs.Empty);
             _resetButton.Click += (s, e) => ResetClicked?.Invoke(this, EventArgs.Empty);
@@ -169,7 +169,7 @@ namespace PomodoroTray
             _pinButton.BackColor = _pinned
                 ? Color.FromArgb(80, 110, 190)  // закреплено — подсвечено
                 : Color.FromArgb(63, 63, 70);
-            _tip.SetToolTip(_pinButton, _pinned ? "Снять закрепление" : "Закрепить панель");
+            _tip.SetToolTip(_pinButton, _pinned ? "Unpin" : "Pin panel");
         }
 
         public void UpdateDisplay(TimeSpan remaining, string phaseLabel, bool isRunning)
@@ -181,7 +181,7 @@ namespace PomodoroTray
             {
                 _isRunning = isRunning;
                 _startPauseButton.Text = isRunning ? GlyphPause : GlyphPlay;
-                _tip.SetToolTip(_startPauseButton, isRunning ? "Пауза" : "Старт");
+                _tip.SetToolTip(_startPauseButton, isRunning ? "Pause" : "Start");
             }
         }
 

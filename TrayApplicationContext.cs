@@ -63,12 +63,12 @@ namespace PomodoroTray
         {
             var menu = new ContextMenuStrip();
 
-            startPauseItem = new ToolStripMenuItem("Старт", null, (s, e) => TogglePause());
-            var resetItem = new ToolStripMenuItem("Сброс", null, (s, e) => ResetTimer());
-            var skipItem = new ToolStripMenuItem("Пропустить фазу", null, (s, e) => SkipPhase());
-            var exitItem = new ToolStripMenuItem("Выход", null, (s, e) => ExitApp());
+            startPauseItem = new ToolStripMenuItem("Start", null, (s, e) => TogglePause());
+            var resetItem = new ToolStripMenuItem("Reset", null, (s, e) => ResetTimer());
+            var skipItem = new ToolStripMenuItem("Skip Phase", null, (s, e) => SkipPhase());
+            var exitItem = new ToolStripMenuItem("Exit", null, (s, e) => ExitApp());
 
-            var autoStartItem = new ToolStripMenuItem("Автостарт")
+            var autoStartItem = new ToolStripMenuItem("Autostart")
             {
                 CheckOnClick = true,
                 Checked = _settings.AutoStart
@@ -80,7 +80,7 @@ namespace PomodoroTray
                 _settings.Save();
             };
 
-            var notificationsItem = new ToolStripMenuItem("Уведомления")
+            var notificationsItem = new ToolStripMenuItem("Notifications")
             {
                 CheckOnClick = true,
                 Checked = _settings.Notifications
@@ -138,12 +138,12 @@ namespace PomodoroTray
                 return;
 
             string title = finishedPhase == PomodoroPhase.Work
-                ? "Время работы закончилось"
-                : "Перерыв закончился";
+                ? "Work session finished"
+                : "Break finished";
 
             string body = _engine.CurrentPhase == PomodoroPhase.Work
-                ? "Пора вернуться к работе."
-                : $"Начался: {_engine.PhaseLabel.ToLower()}.";
+                ? "Time to get back to work."
+                : $"Started: {_engine.PhaseLabel.ToLower()}.";
 
             _trayIcon.ShowBalloonTip(4000, title, body, ToolTipIcon.Info);
         }
@@ -168,7 +168,7 @@ namespace PomodoroTray
             }
 
             _trayIcon.Text = BuildTooltip();
-            _startPauseMenuItem.Text = _engine.IsRunning ? "Пауза" : "Старт";
+            _startPauseMenuItem.Text = _engine.IsRunning ? "Pause" : "Start";
 
             if (_popup.Visible)
             {
@@ -180,7 +180,7 @@ namespace PomodoroTray
         {
             var r = _engine.Remaining;
             string time = $"{(int)r.TotalMinutes:00}:{r.Seconds:00}";
-            string state = _engine.IsRunning ? "" : " (пауза)";
+            string state = _engine.IsRunning ? "" : " (paused)";
             // NotifyIcon.Text ограничен ~127 символами — укладываемся с запасом.
             return $"Pomodoro — {_engine.PhaseLabel}: {time}{state}";
         }
