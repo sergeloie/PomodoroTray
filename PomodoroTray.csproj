@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Иконка exe-файла необязательна: иконка в трее рисуется программно
+         (см. IconRenderer.cs). Если хотите свою иконку .exe — положите
+         app.ico в эту папку и раскомментируйте строку ниже.
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    -->
+    <AssemblyName>PomodoroTray</AssemblyName>
+    <RootNamespace>PomodoroTray</RootNamespace>
+    <!-- Один exe-файл, чтобы можно было просто скопировать и запустить -->
+    <SelfContained>false</SelfContained>
+    <StartupObject>PomodoroTray.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Тестовый проект лежит внутри этой папки — не включать его исходники
+         в компиляцию основного приложения. -->
+    <Compile Remove="PomodoroTray.Tests/**" />
+    <None Remove="PomodoroTray.Tests/**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Если файла app.ico нет — можно убрать строку ApplicationIcon выше,
+         тогда будет стандартная иконка .NET. Иконка в трее всё равно
+         рисуется программно (см. IconRenderer.cs), от .ico не зависит. -->
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,16 @@
+# Build outputs
+bin/
+obj/
+dist/
+publish/
+
+# IDE / user files
+.vs/
+*.user
+*.suo
+
+# Test results
+TestResults/
+
+# Internal agent journal (not part of the app)
+skill-observations/
