@@ -4,6 +4,8 @@ A lightweight Pomodoro timer that lives in the Windows taskbar tray.
 The remaining minutes are drawn directly on the tray icon as crisp pixel
 digits — no tiny system font, no opening windows to check the time.
 
+![PomodoroTray screenshot](screenshot.png)
+
 ## Features
 
 - **Pixel-clock tray icon** — remaining minutes rendered edge-to-edge as
