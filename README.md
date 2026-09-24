@@ -5,14 +5,16 @@ The remaining minutes are drawn directly on the tray icon as crisp pixel
 digits — no tiny system font, no opening windows to check the time.
 
 ![PomodoroTray screenshot](screenshot.png)
+![PomodoroTray screenshot2](screenshot_02.png)
+![PomodoroTray screenshot3](screenshot_03.png)
 
 ## Features
 
 - **Pixel-clock tray icon** — remaining minutes rendered edge-to-edge as
   hand-designed pixel digits. The color tells you the phase at a glance:
-  - 🔴 red — work session
-  - 🟢 green — short break
-  - 🔵 blue — long break
+  - ���� red — work session
+  - ���� green — short break
+  - ���� blue — long break
   - ⚪ grey — paused
 - **Control popup** (left-click the tray icon) — four icon buttons with
   tooltips: Start/Pause, Reset, Skip phase, and Pin. While pinned, the
