@@ -69,6 +69,24 @@ namespace PomodoroTray
             Tick?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Применить новые длительности фаз: текущая фаза перезапускается
+        /// на полную новую длительность, изменения видны сразу.
+        /// </summary>
+        public void ApplyDurations()
+        {
+            _remaining = FullDuration(CurrentPhase);
+            Tick?.Invoke(this, EventArgs.Empty);
+        }
+
+        private TimeSpan FullDuration(PomodoroPhase phase) => phase switch
+        {
+            PomodoroPhase.Work => TimeSpan.FromMinutes(WorkMinutes),
+            PomodoroPhase.ShortBreak => TimeSpan.FromMinutes(ShortBreakMinutes),
+            PomodoroPhase.LongBreak => TimeSpan.FromMinutes(LongBreakMinutes),
+            _ => TimeSpan.FromMinutes(WorkMinutes)
+        };
+
         /// <summary>Вызывать раз в секунду (например, из System.Windows.Forms.Timer).</summary>
         public void OnSecondElapsed()
         {
@@ -106,13 +124,7 @@ namespace PomodoroTray
                     break;
             }
 
-            _remaining = CurrentPhase switch
-            {
-                PomodoroPhase.Work => TimeSpan.FromMinutes(WorkMinutes),
-                PomodoroPhase.ShortBreak => TimeSpan.FromMinutes(ShortBreakMinutes),
-                PomodoroPhase.LongBreak => TimeSpan.FromMinutes(LongBreakMinutes),
-                _ => TimeSpan.FromMinutes(WorkMinutes)
-            };
+            _remaining = FullDuration(CurrentPhase);
 
             // Автостарт: следующая фаза стартует сразу или ждёт ручного «Старт»
             // — в зависимости от настройки (пункт меню «Автостарт»).

@@ -23,8 +23,16 @@ namespace PomodoroTray
         public TrayApplicationContext()
         {
             _settings = AppSettings.Load();
+            _settings.Clamp();
 
-            _engine = new PomodoroEngine { AutoStart = _settings.AutoStart };
+            _engine = new PomodoroEngine
+            {
+                AutoStart = _settings.AutoStart,
+                WorkMinutes = _settings.WorkMinutes,
+                ShortBreakMinutes = _settings.ShortBreakMinutes,
+                LongBreakMinutes = _settings.LongBreakMinutes,
+                SessionsBeforeLongBreak = _settings.SessionsBeforeLongBreak
+            };
 
             // При включённом автостарте первая фаза стартует сразу при запуске.
             if (_settings.AutoStart)
@@ -91,12 +99,16 @@ namespace PomodoroTray
                 _settings.Save();
             };
 
+            var settingsItem = new ToolStripMenuItem("Settings...", null, (s, e) => ShowSettingsDialog());
+
             menu.Items.Add(startPauseItem);
             menu.Items.Add(resetItem);
             menu.Items.Add(skipItem);
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add(autoStartItem);
             menu.Items.Add(notificationsItem);
+            menu.Items.Add(new ToolStripSeparator());
+            menu.Items.Add(settingsItem);
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add(exitItem);
 
@@ -129,6 +141,35 @@ namespace PomodoroTray
         private void SkipPhase()
         {
             _engine.SkipPhase();
+            RefreshUI();
+        }
+
+        private void ShowSettingsDialog()
+        {
+            using var dialog = new SettingsForm(
+                _engine.WorkMinutes, _engine.ShortBreakMinutes,
+                _engine.LongBreakMinutes, _engine.SessionsBeforeLongBreak);
+
+            if (dialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            _settings.WorkMinutes = dialog.WorkMinutes;
+            _settings.ShortBreakMinutes = dialog.ShortBreakMinutes;
+            _settings.LongBreakMinutes = dialog.LongBreakMinutes;
+            _settings.SessionsBeforeLongBreak = dialog.SessionsBeforeLongBreak;
+            _settings.Clamp();
+            _settings.Save();
+
+            // Значения в движке и настройках уже согласованы ( Clamp выровнял
+            // оба) — можно применять без повторной валидации.
+            _engine.WorkMinutes = _settings.WorkMinutes;
+            _engine.ShortBreakMinutes = _settings.ShortBreakMinutes;
+            _engine.LongBreakMinutes = _settings.LongBreakMinutes;
+            _engine.SessionsBeforeLongBreak = _settings.SessionsBeforeLongBreak;
+
+            // Перезапускаем текущую фазу на новую длительность — изменения видны сразу.
+            _engine.ApplyDurations();
+            _iconDirty = true;
             RefreshUI();
         }
 

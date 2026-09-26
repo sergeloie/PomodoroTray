@@ -23,10 +23,15 @@ digits — no tiny system font, no opening windows to check the time.
   - **Autostart** (on by default) — the next phase begins immediately
     when the current one ends; the first phase also starts at app launch.
   - **Notifications** (on by default) — balloon tip when a phase ends.
+  - **Settings...** — edit work / short break / long break durations and
+    the number of work sessions before a long break. Changes apply
+    immediately (the current phase restarts with the new duration) and
+    persist to settings.json.
 - **Settings persist** between launches in
   `%AppData%\PomodoroTray\settings.json`.
 - **Default phases**: 25 min work / 5 min short break / 15 min long break
-  (long break after every 4th session).
+  (long break after every 4th session) — all editable in the
+  **Settings...** dialog.
 
 ## Download
 
@@ -75,9 +80,11 @@ exe into the folder that opens.
 
 ## Configuration
 
-- **Phase durations** — edit `PomodoroEngine.cs`
+- **Phase durations & sessions before long break** — right-click the tray
+  icon → **Settings...**; changes apply immediately and persist in
+  `%AppData%\PomodoroTray\settings.json`
   (`WorkMinutes`, `ShortBreakMinutes`, `LongBreakMinutes`,
-  `SessionsBeforeLongBreak`) and rebuild.
+  `SessionsBeforeLongBreak`).
 - **Autostart / Notifications** — toggle from the tray icon's right-click
   menu; saved automatically.
 - **Icon colors per phase** — `PixelClock.GetColor`.

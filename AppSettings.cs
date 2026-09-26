@@ -17,6 +17,30 @@ namespace PomodoroTray
         /// <summary>Показывать balloon-уведомления при завершении фазы.</summary>
         public bool Notifications { get; set; } = true;
 
+        // Длительности фаз (в минутах) и количество рабочих сессий перед
+        // длинным перерывом — редактируются в диалоге «Settings...».
+        public int WorkMinutes { get; set; } = 25;
+        public int ShortBreakMinutes { get; set; } = 5;
+        public int LongBreakMinutes { get; set; } = 15;
+        public int SessionsBeforeLongBreak { get; set; } = 4;
+
+        /// <summary>
+        /// Приводит интервалы к разумным границам: битый settings.json или
+        /// мусор из диалога не должны приводить к отрицательному таймеру.
+        /// </summary>
+        public void Clamp()
+        {
+            const int MinMinutes = 1;
+            const int MaxMinutes = 180;
+            const int MinSessions = 1;
+            const int MaxSessions = 12;
+
+            WorkMinutes = Math.Clamp(WorkMinutes, MinMinutes, MaxMinutes);
+            ShortBreakMinutes = Math.Clamp(ShortBreakMinutes, MinMinutes, MaxMinutes);
+            LongBreakMinutes = Math.Clamp(LongBreakMinutes, MinMinutes, MaxMinutes);
+            SessionsBeforeLongBreak = Math.Clamp(SessionsBeforeLongBreak, MinSessions, MaxSessions);
+        }
+
         private static string DirPath => Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "PomodoroTray");
