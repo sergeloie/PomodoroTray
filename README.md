@@ -35,8 +35,11 @@ digits — no tiny system font, no opening windows to check the time.
 
 ## Download
 
-Grab the exe from the [Releases](../../releases) page. Two builds are
-published:
+Grab the exe from the [Releases](../../releases) page. The latest release,
+**[v1.1.0](../../releases/tag/v1.1.0)**, adds a **Settings...** dialog —
+edit the work / short break / long break durations and the number of work
+sessions before a long break right from the tray menu, no rebuild needed.
+Two builds are published:
 
 | File | .NET required? | Size | Use when |
 |------|----------------|------|----------|
