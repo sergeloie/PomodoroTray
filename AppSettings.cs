@@ -27,11 +27,13 @@ namespace PomodoroTray
         /// <summary>
         /// Приводит интервалы к разумным границам: битый settings.json или
         /// мусор из диалога не должны приводить к отрицательному таймеру.
+        /// Верхняя граница 99 — трей-иконка (PixelClock) показывает максимум
+        /// две цифры минут.
         /// </summary>
         public void Clamp()
         {
             const int MinMinutes = 1;
-            const int MaxMinutes = 180;
+            const int MaxMinutes = 99;
             const int MinSessions = 1;
             const int MaxSessions = 12;
 

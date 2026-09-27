@@ -114,8 +114,9 @@ namespace PomodoroTray
             };
             var numeric = new NumericUpDown
             {
+                // Трей-иконка (PixelClock) показывает максимум две цифры минут.
                 Minimum = 1,
-                Maximum = 180,
+                Maximum = 99,
                 Width = 90,
                 Anchor = AnchorStyles.Right,
                 Margin = new Padding(3, 6, 3, 3)
