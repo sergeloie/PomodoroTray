@@ -59,6 +59,36 @@ public class PomodoroEngineTests
         Assert.Equal(PomodoroPhase.LongBreak, engine.CurrentPhase);
     }
 
+    // Регрессия: настройки из settings.json подставляются в движок объектным
+    // инициализатором, то есть ПОСЛЕ конструктора. Remaining должен сразу
+    // считаться из этих значений, а не из дефолтных 25 минут.
+    [Fact]
+    public void Remaining_uses_configured_durations_before_first_tick()
+    {
+        var engine = new PomodoroEngine
+        {
+            WorkMinutes = 50,
+            ShortBreakMinutes = 7,
+            LongBreakMinutes = 20
+        };
+
+        Assert.Equal(50 * 60, engine.Remaining.TotalSeconds);
+
+        engine.SkipPhase(); // Work -> ShortBreak
+        Assert.Equal(7 * 60, engine.Remaining.TotalSeconds);
+    }
+
+    [Fact]
+    public void First_tick_counts_down_from_configured_duration()
+    {
+        var engine = new PomodoroEngine { WorkMinutes = 50 };
+        engine.Start();
+
+        engine.OnSecondElapsed();
+
+        Assert.Equal(50 * 60 - 1, engine.Remaining.TotalSeconds);
+    }
+
     [Fact]
     public void New_durations_take_effect_on_next_phase_after_skip()
     {

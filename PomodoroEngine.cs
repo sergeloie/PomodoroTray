@@ -33,16 +33,15 @@ namespace PomodoroTray
         /// </summary>
         public bool AutoStart { get; set; } = true;
 
-        private TimeSpan _remaining;
-        public TimeSpan Remaining => _remaining;
+        // Остаток времени текущей фазы. null = отсчёт ещё не начинался: тогда
+        // Remaining вычисляется из актуальных длительностей (это важно, потому что
+        // настройки подставляются в движок уже после конструктора — объектным
+        // инициализатором в TrayApplicationContext).
+        private TimeSpan? _remaining;
+        public TimeSpan Remaining => _remaining ?? FullDuration(CurrentPhase);
 
         public event EventHandler? Tick;
         public event EventHandler<PomodoroPhase>? PhaseCompleted; // фаза, которая только что завершилась
-
-        public PomodoroEngine()
-        {
-            _remaining = TimeSpan.FromMinutes(WorkMinutes);
-        }
 
         public void Start() => IsRunning = true;
 
@@ -58,7 +57,7 @@ namespace PomodoroTray
             IsRunning = false;
             CurrentPhase = PomodoroPhase.Work;
             CompletedWorkSessions = 0;
-            _remaining = TimeSpan.FromMinutes(WorkMinutes);
+            _remaining = null; // оставшийся путь пересчитается из актуальных настроек
             Tick?.Invoke(this, EventArgs.Empty);
         }
 
@@ -92,13 +91,16 @@ namespace PomodoroTray
         {
             if (!IsRunning) return;
 
-            if (_remaining > TimeSpan.Zero)
+            // Первый тик: берём полную длительность текущей фазы с учётом настроек.
+            _remaining ??= FullDuration(CurrentPhase);
+
+            if (_remaining.Value > TimeSpan.Zero)
             {
-                _remaining = _remaining.Subtract(TimeSpan.FromSeconds(1));
+                _remaining = _remaining.Value.Subtract(TimeSpan.FromSeconds(1));
                 Tick?.Invoke(this, EventArgs.Empty);
             }
 
-            if (_remaining <= TimeSpan.Zero)
+            if (_remaining.Value <= TimeSpan.Zero)
             {
                 var finished = CurrentPhase;
                 AdvancePhase();
