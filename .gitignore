@@ -14,3 +14,4 @@ TestResults/
 
 # Internal agent journal (not part of the app)
 skill-observations/
+.freebuff
