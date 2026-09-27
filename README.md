@@ -39,6 +39,11 @@ Grab the exe from the [Releases](../../releases) page. The latest release,
 **[v1.1.0](../../releases/tag/v1.1.0)**, adds a **Settings...** dialog —
 edit the work / short break / long break durations and the number of work
 sessions before a long break right from the tray menu, no rebuild needed.
+Saved intervals are applied **at launch** — the tray icon and tooltip show
+the durations from settings.json right away, not the defaults. Durations
+are limited to **1–99 minutes**: the tray icon renders two digits, so the
+dialog rejects larger values, and zero/negative values in a hand-edited
+settings.json are clamped automatically.
 Two builds are published:
 
 | File | .NET required? | Size | Use when |
